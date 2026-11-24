@@ -49,17 +49,9 @@ enum InputType {
   Touch = "Touch"
 }
 
-type InputEvents =
-  | "mousedown"
-  | "mouseup"
-  | "mousemove"
-  | "touchstart"
-  | "touchmove"
-  | "touchend"
-  | "touchcancel";
-type InputEventListener = <K extends InputEvents>(
-  e: HTMLElementEventMap[K]
-) => void;
+type InputEventListener =
+  | ((e: MouseEvent) => void)
+  | ((e: TouchEvent) => void);
 type InputTarget = Window | HTMLElement | null;
 
 interface InputListenerData {
@@ -600,9 +592,9 @@ export class GestureInputHandler {
     or the remove variation in a variable caused the function to lose its
     context - so it wasn't ever actually attached to "target". */
     if (add) {
-      inputTarget.addEventListener(event, listener, false);
+      inputTarget.addEventListener(event, listener as EventListener, false);
     } else {
-      inputTarget.removeEventListener(event, listener, false);
+      inputTarget.removeEventListener(event, listener as EventListener, false);
     }
   };
 

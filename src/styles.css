@@ -1,25 +1,143 @@
-html,
-body,
-#root,
-.extended-container,
-.container {
-  height: 100%;
-}
-.App {
-  font-family: sans-serif;
-  text-align: center;
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #4d4d4d;
+  --color-ball: #c62828;
+  --color-focus: #0b57d0;
+  --color-border: #767676;
+  --color-surface: #f2f2f2;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+
+  --size-ball: clamp(64px, 18vmin, 120px);
+  --radius-control: 6px;
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 3px;
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  color-scheme: light dark;
 }
 
-.extended-container {
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #121212;
+    --color-text: #f2f2f2;
+    --color-text-muted: #b8b8b8;
+    --color-ball: #ff6b6b;
+    --color-focus: #8ab4f8;
+    --color-border: #8a8a8a;
+    --color-surface: #242424;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+.container {
   display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-3);
+  overflow: hidden;
+}
+
+.container h1 {
+  margin: 0 0 var(--space-2);
+  font-size: 1.5rem;
+}
+
+.help {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  margin-top: var(--space-3);
+}
+
+.controls label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: 0.875rem;
+}
+
+.controls button {
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.stage {
+  display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
-  height: calc(100% - 100px);
+  min-height: 0;
 }
 
 .ball {
+  width: var(--size-ball);
+  height: var(--size-ball);
+  padding: 0;
+  border: 0;
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  background-color: red;
+  background-color: var(--color-ball);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.ball:active {
+  cursor: grabbing;
+}
+
+.ball[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ball:focus-visible,
+.controls button:focus-visible,
+.controls input:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
